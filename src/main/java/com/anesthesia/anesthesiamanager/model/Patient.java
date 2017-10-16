@@ -12,9 +12,10 @@ import java.time.LocalDateTime;
  * Created by Michal-morthenn on 16/10/2017.
  */
 
-@Entity
-@Table
+//@Entity
+//@Table
 public class Patient {
+
 
     private int id;
     private int evidentialNumber;
@@ -72,7 +73,7 @@ public class Patient {
         this.registerDate = registeredDate;
     }
 
-    public void setAsaFactor(AsaRank asaFactor) {this.asaRank = asaFactor.getFieldDescription();}
+    public void setAsaFactor(AsaRank asaFactor) {this.asaRank = asaRank;}
 
     public void setTreatmentType(String treatmentType) {
         this.treatmentDetails = treatmentDetails;
