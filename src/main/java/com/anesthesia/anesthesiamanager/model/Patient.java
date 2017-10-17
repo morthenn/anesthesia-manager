@@ -4,19 +4,19 @@ import com.anesthesia.anesthesiamanager.utils.fields.AsaRank;
 import com.anesthesia.anesthesiamanager.utils.fields.Supervision;
 import com.anesthesia.anesthesiamanager.utils.fields.Technique;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 /**
  * Created by Michal-morthenn on 16/10/2017.
  */
 
-//@Entity
-//@Table
+@Entity
+@Table
 public class Patient {
 
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
     private int evidentialNumber;
     private LocalDateTime registerDate;
