@@ -1,6 +1,8 @@
 package com.anesthesia.anesthesiamanager.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.Set;
 
@@ -9,12 +11,39 @@ import java.util.Set;
  */
 
 @Entity
-@Table(name = "Doctor")
+@Table
 public class User {
 
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Id
     private long id;
-    @OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL)
+
+    private String username;
+
+    @JsonIgnore
+    private String password;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private Set<Patient> listOfPatients;
+
+    //JPA only - public no arg constructor
+    public User() {
+    }
+
+    public User(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
 }
