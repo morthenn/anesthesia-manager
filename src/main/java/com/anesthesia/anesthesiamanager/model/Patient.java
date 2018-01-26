@@ -1,9 +1,11 @@
 package com.anesthesia.anesthesiamanager.model;
 
-import com.anesthesia.anesthesiamanager.utils.Period;
 import com.anesthesia.anesthesiamanager.utils.fields.AsaRank;
 import com.anesthesia.anesthesiamanager.utils.fields.Supervision;
 import com.anesthesia.anesthesiamanager.utils.fields.Technique;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -14,131 +16,52 @@ import java.time.LocalDateTime;
  */
 
 @Entity
-@Table
+@Data
+@NoArgsConstructor
 public class Patient {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    private long id;
+
     @NotNull
-    private int evidentialNumber;
+    private long evidentialNumber;
+
+    @JsonFormat(pattern = "dd-MM-yyyy HH:mm")
     @NotNull
     private LocalDateTime registerDate;
 
+    @NotNull
     private String age;
+
+    @NotNull
     private AsaRank asaRank;
+
+    @NotNull
     private Supervision supervision;
+
+    @NotNull
     private Technique technique;
+
+    @NotNull
     private String treatmentDetails;
-    @ManyToOne
+
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private User user;
 
-    //Jpa only
-    public Patient() {
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public void setAge(int patientAge, Period timePeriod) {
-        switch (timePeriod) {
-            case WEEK:
-                if (patientAge == 1) {
-                    this.age = "1 tydzień";
-                    break;
-                } else if (patientAge < 4) {
-                    this.age = patientAge + " tygodnie";
-                    break;
-                }
-            case MONTH:
-                if (patientAge == 1) {
-                    this.age = "1 miesiąc";
-                    break;
-                } else if (patientAge > 1 && patientAge < 5) {
-                    this.age = patientAge + " miesiące";
-                    break;
-                } else if (patientAge < 12) {
-                    this.age = patientAge + " miesięcy";
-                    break;
-                }
-            case YEAR:
-                if (patientAge == 1) {
-                    this.age = "1 rok";
-                    break;
-                } else if (patientAge > 1 && patientAge < 5) {
-                    this.age = patientAge + " lata";
-                    break;
-                } else if (patientAge < 120) {
-                    this.age = patientAge + " lat";
-                    break;
-                }
-        }
-    }
-
-    public int getEvidentialNumber() {
-        return evidentialNumber;
-    }
-
-    public void setEvidentialNumber(int evidentialNumber) {
+    public Patient(long evidentialNumber, LocalDateTime registerDate, String age, AsaRank asaRank, Supervision supervision, Technique technique, String treatmentDetails, User user) {
         this.evidentialNumber = evidentialNumber;
-    }
-
-    public LocalDateTime getRegisterDate() {
-        return registerDate;
-    }
-
-    public void setRegisterDate(LocalDateTime registerDate) {
         this.registerDate = registerDate;
-    }
-
-    public String getAge() {
-        return age;
-    }
-
-    public AsaRank getAsaRank() {
-        return asaRank;
-    }
-
-    public void setAsaRank(AsaRank asaRank) {
+        this.age = age;
         this.asaRank = asaRank;
-    }
-
-    public Supervision getSupervision() {
-        return supervision;
-    }
-
-    public void setSupervision(Supervision supervision) {
         this.supervision = supervision;
-    }
-
-    public Technique getTechnique() {
-        return technique;
-    }
-
-    public void setTechnique(Technique technique) {
         this.technique = technique;
-    }
-
-    public String getTreatmentDetails() {
-        return treatmentDetails;
-    }
-
-    public void setTreatmentDetails(String treatmentDetails) {
         this.treatmentDetails = treatmentDetails;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
         this.user = user;
     }
 
+//    public void setAge(int patientAge, AgePeriod timeAgePeriod) {
+//        this.age = AgePeriod.getAgePeriodName(timeAgePeriod, patientAge);
+//    }
 }
