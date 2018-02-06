@@ -60,8 +60,4 @@ public class Patient {
         this.treatmentDetails = treatmentDetails;
         this.user = user;
     }
-
-//    public void setAge(int patientAge, AgePeriod timeAgePeriod) {
-//        this.age = AgePeriod.getAgePeriodName(timeAgePeriod, patientAge);
-//    }
 }

@@ -34,11 +34,11 @@ public class User {
     public User(String username, String password) {
         this.username = username;
         this.password = password;
-//        this.listOfPatients=new LinkedHashSet<Patient>();
+        this.listOfPatients=new LinkedHashSet<Patient>();
     }
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL,  orphanRemoval = true)
     public LinkedHashSet<Patient> getListOfPatients() {
-        return listOfPatients;
+        return this.listOfPatients;
     }
 }

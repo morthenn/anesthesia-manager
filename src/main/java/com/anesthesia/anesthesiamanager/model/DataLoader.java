@@ -1,6 +1,7 @@
 package com.anesthesia.anesthesiamanager.model;
 
 import com.anesthesia.anesthesiamanager.repository.PatientRepository;
+import com.anesthesia.anesthesiamanager.repository.UserRepository;
 import com.anesthesia.anesthesiamanager.utils.fields.AsaRank;
 import com.anesthesia.anesthesiamanager.utils.fields.Supervision;
 import com.anesthesia.anesthesiamanager.utils.fields.Technique;
@@ -15,15 +16,20 @@ import java.time.LocalDateTime;
 public class DataLoader implements CommandLineRunner{
 
         private final PatientRepository repository;
+        private final UserRepository userRepository;
+
         @Autowired
-        public DataLoader(PatientRepository repository) {
+        public DataLoader(PatientRepository repository, UserRepository userRepository) {
+
             this.repository = repository;
+            this.userRepository = userRepository;
         }
 
         @Override
         @Transactional
         public void run(String... strings) throws Exception {
             User user = new User("kokokok","ajjjaja");
+            this.userRepository.save(user);
             this.repository.save(new Patient(666,LocalDateTime.now(), "2 lata", AsaRank.THREE, Supervision.WSPOLUDZIAL, Technique.PODPAJECZYNOWKOWE,"DOMMY",user));
             this.repository.save(new Patient(666,LocalDateTime.now(), "4 lata", AsaRank.ONE, Supervision.SAMODZIELNIE, Technique.ZEWNATRZOPONOWE,"DSDSD",user));
             this.repository.save(new Patient(666,LocalDateTime.now(), "5 lata", AsaRank.TWO, Supervision.WSPOLUDZIAL, Technique.BLOKADY_NERWOW,"FGFWFWF",user));
