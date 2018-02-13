@@ -21,12 +21,13 @@ public class PatientController {
     @GetMapping("/api/patients/{patientId}")
     public Patient retrievePatientData(@PathVariable String patientId) {
         Long id = Long.parseLong(patientId);
-        return patientService.retrieveCourses(id);
+        return patientService.getPatient(id);
     }
 
-//    @GetMapping("/api/patients")
-//    public List<Patient> getAllPatients() {
-//        return patientService.getPatients();
-//    }
+    @GetMapping("/api/patients")
+    public List<Patient> getAllPatients() {
+        return patientService.getPatients();
+    }
+
 }
 

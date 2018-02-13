@@ -2,13 +2,13 @@ package com.anesthesia.anesthesiamanager.model;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Created by Michal-morthenn on 16/10/2017.
@@ -29,16 +29,11 @@ public class User {
     @JsonIgnore
     private String password;
 
-    private LinkedHashSet<Patient> listOfPatients;
+    @OneToMany(mappedBy = "user")
+    private List<Patient> listOfPatients = new LinkedList<>();
 
-    public User(String username, String password) {
+    User(String username, String password) {
         this.username = username;
         this.password = password;
-        this.listOfPatients=new LinkedHashSet<Patient>();
-    }
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL,  orphanRemoval = true)
-    public LinkedHashSet<Patient> getListOfPatients() {
-        return this.listOfPatients;
     }
 }

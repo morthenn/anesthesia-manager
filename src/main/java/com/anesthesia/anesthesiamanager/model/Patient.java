@@ -3,6 +3,7 @@ package com.anesthesia.anesthesiamanager.model;
 import com.anesthesia.anesthesiamanager.utils.fields.AsaRank;
 import com.anesthesia.anesthesiamanager.utils.fields.Supervision;
 import com.anesthesia.anesthesiamanager.utils.fields.Technique;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -48,9 +49,10 @@ public class Patient {
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
+    @JsonBackReference
     private User user;
 
-    public Patient(long evidentialNumber, LocalDateTime registerDate, String age, AsaRank asaRank, Supervision supervision, Technique technique, String treatmentDetails, User user) {
+    Patient(long evidentialNumber, LocalDateTime registerDate, String age, AsaRank asaRank, Supervision supervision, Technique technique, String treatmentDetails, User user) {
         this.evidentialNumber = evidentialNumber;
         this.registerDate = registerDate;
         this.age = age;
