@@ -28,7 +28,7 @@ public class Patient {
     @NotNull
     private long evidentialNumber;
 
-    @JsonFormat(pattern = "dd-MM-yyyy HH:mm")
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm")
     @NotNull
     private LocalDateTime registerDate;
 
@@ -61,5 +61,18 @@ public class Patient {
         this.technique = technique;
         this.treatmentDetails = treatmentDetails;
         this.user = user;
+    }
+
+    @Override
+    public String toString() {
+        return  "Id=" + id +
+                ", Nr. ewidencyjny=" + evidentialNumber +
+                ", registerDate=" + registerDate +
+                ", age='" + age + '\'' +
+                ", asaRank=" + asaRank +
+                ", supervision=" + supervision +
+                ", technique=" + technique +
+                ", treatmentDetails='" + treatmentDetails + '\'' +
+                ", lekarz=" + user;
     }
 }

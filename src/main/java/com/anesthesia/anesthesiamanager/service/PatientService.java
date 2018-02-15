@@ -19,12 +19,20 @@ public class PatientService {
     @Autowired
     private PatientRepository patientRepository;
 
-    public Patient getPatient(Long studentId) {
-        return patientRepository.findOne(studentId);
+    public Patient getPatientForUser(Long patientId) {
+        return patientRepository.findOne(patientId);
     }
 
     public List<Patient> getPatients() {
         List<Patient> patientsList = (ArrayList<Patient>) patientRepository.findAll();
         return patientsList.stream().sorted(Comparator.comparing(Patient::getId)).collect(Collectors.toList());
+    }
+
+    public Patient addPatient(Patient patient) {
+        return patientRepository.save(patient);
+    }
+
+    public boolean isUserExist(Patient patient) {
+        return patientRepository.exists(patient.getId());
     }
 }

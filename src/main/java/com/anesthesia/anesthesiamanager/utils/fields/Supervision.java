@@ -4,7 +4,8 @@ package com.anesthesia.anesthesiamanager.utils.fields;
  * Created by Michal-morthenn on 16/10/2017.
  */
 public enum Supervision {
-    SAMODZIELNIE("sam."), WSPOLUDZIAL("współ.");
+    SAMODZIELNIE("sam."),
+    WSPOLUDZIAL("współ.");
 
     private String fieldDescription;
 
