@@ -30,6 +30,7 @@ public class User {
     private String password;
 
     @OneToMany(mappedBy = "user")
+    @JsonIgnore
     private List<Patient> listOfPatients = new LinkedList<>();
 
     User(String username, String password) {

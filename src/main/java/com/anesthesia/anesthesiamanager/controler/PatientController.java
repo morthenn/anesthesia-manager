@@ -1,25 +1,28 @@
 package com.anesthesia.anesthesiamanager.controler;
 
+import com.anesthesia.anesthesiamanager.model.User;
+import com.anesthesia.anesthesiamanager.service.UserNotFoundException;
+import com.anesthesia.anesthesiamanager.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.anesthesia.anesthesiamanager.model.Patient;
 import com.anesthesia.anesthesiamanager.service.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.util.UriComponentsBuilder;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
+import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by Michal-morthenn on 16/10/2017.
  */
 @RestController
-@RequestMapping("/api/patients/")
+@RequestMapping("/api/users/{username}/patients/")
 public class PatientController {
 
     private final Logger logger = LoggerFactory.getLogger(PatientController.class);
@@ -28,34 +31,33 @@ public class PatientController {
     @Autowired
     private PatientService patientService;
 
+    @Autowired
+    private UserService userService;
+
     @GetMapping("{patientId}")
-    public Patient retrievePatientData(@PathVariable String patientId) {
+    public Patient retrievePatientData(@PathVariable String username,@PathVariable String patientId) {
         Long id = Long.parseLong(patientId);
         return patientService.getPatientForUser(id);
     }
 
-    @GetMapping
-    public List<Patient> getAllPatients() {
-        return patientService.getPatients();
-    }
 
     @PostMapping
     @Transactional
-    public ResponseEntity addPatient( @Valid @RequestBody Patient newPatient) {
-        UriComponentsBuilder ucBuilder = null;
-        logger.info("Creating Patient : {}", newPatient);
-        if (patientService.isUserExist(newPatient)) {
-            logger.error("Unable to create. A Patient with name {} already exist", newPatient.toString());
-            return new ResponseEntity<Void>(HttpStatus.CONFLICT);
-        }
-        patientService.addPatient(newPatient);
-        HttpHeaders headers = new HttpHeaders();
-        headers.setLocation(ucBuilder.path("/api/patients/{id}").buildAndExpand(newPatient.getId()).toUri());
-        return new ResponseEntity<String>(headers, HttpStatus.CREATED);
+    public ResponseEntity<?> addPatient(@PathVariable String username, @Valid @RequestBody Patient newPatient) {
 
+        User user = userService.findUser(username);
+        logger.info("Creating Patient : {} for user: {}", newPatient, user.getUsername());
+        if ( user != null ) {
+            newPatient.setUser(user);
+            Patient patient = patientService.addPatient(newPatient);
 
+            URI location = ServletUriComponentsBuilder
+                    .fromCurrentRequest().path("/{id}")
+                    .buildAndExpand(patient.getId()).toUri();
+
+            return ResponseEntity.created(location).build();
+        } else return ResponseEntity.noContent().build();
     }
-
 
 }
 
