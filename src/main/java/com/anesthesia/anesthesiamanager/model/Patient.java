@@ -5,8 +5,8 @@ import com.anesthesia.anesthesiamanager.utils.fields.Supervision;
 import com.anesthesia.anesthesiamanager.utils.fields.Technique;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -19,16 +19,18 @@ import java.time.LocalDateTime;
 @Entity
 @Data
 @NoArgsConstructor
+@ToString(exclude = "id")
+@Table(name = "PATIENTS")
 public class Patient {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private Long id;
 
     @NotNull
-    private long evidentialNumber;
+    private Long evidentialNumber;
 
-    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm")
     @NotNull
     private LocalDateTime registerDate;
 
@@ -36,12 +38,15 @@ public class Patient {
     private String age;
 
     @NotNull
+    @Enumerated(EnumType.STRING)
     private AsaRank asaRank;
 
     @NotNull
+    @Enumerated(EnumType.STRING)
     private Supervision supervision;
 
     @NotNull
+    @Enumerated(EnumType.STRING)
     private Technique technique;
 
     @NotNull
@@ -49,30 +54,7 @@ public class Patient {
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
-    @JsonBackReference
+//    @JsonBackReference
+    @JsonIgnore
     private User user;
-
-    Patient(long evidentialNumber, LocalDateTime registerDate, String age, AsaRank asaRank, Supervision supervision, Technique technique, String treatmentDetails, User user) {
-        this.evidentialNumber = evidentialNumber;
-        this.registerDate = registerDate;
-        this.age = age;
-        this.asaRank = asaRank;
-        this.supervision = supervision;
-        this.technique = technique;
-        this.treatmentDetails = treatmentDetails;
-        this.user = user;
-    }
-
-    @Override
-    public String toString() {
-        return  "Id=" + id +
-                ", Nr. ewidencyjny=" + evidentialNumber +
-                ", registerDate=" + registerDate +
-                ", age='" + age + '\'' +
-                ", asaRank=" + asaRank +
-                ", supervision=" + supervision +
-                ", technique=" + technique +
-                ", treatmentDetails='" + treatmentDetails + '\'' +
-                ", lekarz=" + user;
-    }
 }

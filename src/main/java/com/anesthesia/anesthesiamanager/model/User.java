@@ -2,8 +2,10 @@ package com.anesthesia.anesthesiamanager.model;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -16,25 +18,23 @@ import java.util.List;
 @Data
 @Entity
 @NoArgsConstructor
-
+@AllArgsConstructor
+@Table(name = "USERS")
 public class User {
 
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Id
-    private long id;
+    private Long id;
 
     @NotNull
     private String username;
 
     @JsonIgnore
+    @NotNull
     private String password;
 
     @OneToMany(mappedBy = "user")
     @JsonIgnore
     private List<Patient> listOfPatients = new LinkedList<>();
 
-    User(String username, String password) {
-        this.username = username;
-        this.password = password;
-    }
 }

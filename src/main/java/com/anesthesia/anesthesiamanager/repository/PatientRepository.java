@@ -11,5 +11,6 @@ import java.util.List;
  */
 @Repository
 public interface PatientRepository extends CrudRepository<Patient,Long> {
+   boolean findByEvidentialNumber(Long evidentialNumber);
 
 }
